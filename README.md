@@ -8,4 +8,7 @@ How to use :
 2. run python3 0dev.Centos8.dev.py
 3. than see 0dev.log
 
+
+NOTE : please allow to the script to finished before canceling it , try to see 0dev.log while it running using tail -f /root/0dev.log
+
 enjoy
