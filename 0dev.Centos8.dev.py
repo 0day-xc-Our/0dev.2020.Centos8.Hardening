@@ -47,7 +47,7 @@ def main():                      # Declaring main prototype
     step3()
     step4()
     step5()
-    #step6()
+    step6()
 
 def step1():
     with open("/root/0dev.log" , "a+", buffering = 1) as step1:            
@@ -143,8 +143,8 @@ def step1():
             tmp.write (result_tmp)
             tmp.write ("\nDefaults logfile=\"/var/log/sudo.log\"\n")
             tmp.close ()
+        
 
-        """
         step1.write ("# 1.4.1 Ensure AIDE is installed \n")
         cmd = "dnf install -y aide"
         cmd = cmd.split()
@@ -160,7 +160,7 @@ def step1():
         step1.write ("# Moved The New Database of Ide\n")
         with subprocess.Popen(cmd3, stdout=step1) as tmp12:
             stderr,stdout = tmp12.communicate()
-        """
+        
 
         step1.write ("# 1.4.2 Ensure filesystem integrity is regularly checked\n")
         cmd = "echo '0 5 * * * /usr/sbin/aide --check' > bash.aide.tmp"
