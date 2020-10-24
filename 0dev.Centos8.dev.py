@@ -47,7 +47,7 @@ def main():                      # Declaring main prototype
     step3()
     step4()
     step5()
-    step6()
+    #step6()
 
 def step1():
     with open("/root/0dev.log" , "a+", buffering = 1) as step1:            
@@ -144,6 +144,7 @@ def step1():
             tmp.write ("\nDefaults logfile=\"/var/log/sudo.log\"\n")
             tmp.close ()
 
+        """
         step1.write ("# 1.4.1 Ensure AIDE is installed \n")
         cmd = "dnf install -y aide"
         cmd = cmd.split()
@@ -159,7 +160,8 @@ def step1():
         step1.write ("# Moved The New Database of Ide\n")
         with subprocess.Popen(cmd3, stdout=step1) as tmp12:
             stderr,stdout = tmp12.communicate()
-        
+        """
+
         step1.write ("# 1.4.2 Ensure filesystem integrity is regularly checked\n")
         cmd = "echo '0 5 * * * /usr/sbin/aide --check' > bash.aide.tmp"
         cmd2 = "crontab -u root bash.aide.tmp"
@@ -1254,64 +1256,61 @@ def step5():
             result_tmp = pwquality.read()
             pwquality = pwquality.close()
         with open ("/etc/authselect/custom/custom-profile/password-auth" , "wt" , buffering = 1 ) as pwquality:
-            result_tmp = re.sub(".*password.*requisite.*" , "password    requisite                                    pam_pwquality.so try_first_pass local_users_only enforce-for-root retry=3" , result_tmp)
+            result_tmp = re.sub(".*password.*requisite.*" , "\npassword    requisite                                    pam_pwquality.so try_first_pass local_users_only enforce-for-root retry=3\n" , result_tmp)
             pwquality.write(result_tmp)
             pwquality.close()
         with open ("/etc/authselect/custom/custom-profile/system-auth" , "rt" , buffering = 1 ) as pwquality:
             result_tmp = pwquality.read()
             pwquality = pwquality.close()
         with open ("/etc/authselect/custom/custom-profile/system-auth" , "wt" , buffering = 1 ) as pwquality:
-            result_tmp = re.sub(".*password.*requisite.*" , "password    requisite                                    pam_pwquality.so try_first_pass local_users_only enforce-for-root retry=3" , result_tmp)
+            result_tmp = re.sub(".*password.*requisite.*" , "\npassword    requisite                                    pam_pwquality.so try_first_pass local_users_only enforce-for-root retry=3\n" , result_tmp)
             pwquality.write(result_tmp)
             pwquality.close()
-        
-        
+    
+    
         step5.write("# 5.4.2 Ensure lockout for failed password attempts is configured\n")
         with open ("/etc/authselect/custom/custom-profile/password-auth" , "rt" , buffering = 1 ) as pwquality:
             result_tmp = pwquality.read()
             pwquality = pwquality.close()
         with open ("/etc/authselect/custom/custom-profile/password-auth" , "wt" , buffering = 1 ) as pwquality:
             pwquality.write(result_tmp)
-            pwquality.write("auth required pam_faillock.so preauth silent deny=5 unlock_time=900")
-            pwquality.write("auth required pam_faillock.so authfail deny=5 unlock_time=900")
+            pwquality.write("\nauth required pam_faillock.so preauth silent deny=5 unlock_time=900\n")
+            pwquality.write("\nauth required pam_faillock.so authfail deny=5 unlock_time=900\n")
             pwquality.close()
         with open ("/etc/authselect/custom/custom-profile/system-auth" , "rt" , buffering = 1 ) as pwquality:
             result_tmp = pwquality.read()
             pwquality = pwquality.close()
         with open ("/etc/authselect/custom/custom-profile/system-auth" , "wt" , buffering = 1 ) as pwquality:
             pwquality.write(result_tmp)
-            pwquality.write("auth required pam_faillock.so preauth silent deny=5 unlock_time=900")
-            pwquality.write("auth required pam_faillock.so authfail deny=5 unlock_time=900")
+            pwquality.write("\nauth required pam_faillock.so preauth silent deny=5 unlock_time=900\n")
+            pwquality.write("\nauth required pam_faillock.so authfail deny=5 unlock_time=900\n")
             pwquality.close()
-        
+    
+    
         step5.write("# 5.4.3 Ensure password reuse is limited\n")
         with open ("/etc/authselect/custom/custom-profile/system-auth" , "rt" , buffering = 1 ) as pwquality:
             result_tmp = pwquality.read()
             pwquality = pwquality.close()
         with open ("/etc/authselect/custom/custom-profile/system-auth" , "wt" , buffering = 1 ) as pwquality:
-            result_tmp = re.sub(".*password.*requisite.*pam_pwquality.so.*" , "" , result_tmp)
-            result_tmp = re.sub(".*password.*sufficient.*pam_unix.so.*" , "" , result_tmp)
+            result_tmp = re.sub(".*password.*requisite.*pam_pwquality.so.*" , "\npassword requisite pam_pwquality.so try_first_pass local_users_only enforce-for-root retry=3 remember=5\n" , result_tmp)
+            result_tmp = re.sub(".*password.*sufficient.*pam_unix.so.*" , "\npassword sufficient pam_unix.so sha512 shadow try_first_pass use_authtok remember=5\n" , result_tmp)
             pwquality.write(result_tmp)
-            pwquality.write("password requisite pam_pwquality.so try_first_pass local_users_only enforce-for-root retry=3 remember=5")
-            pwquality.write("password sufficient pam_unix.so sha512 shadow try_first_pass use_authtok remember=5")
             pwquality.close()
-        
+    
         step5.write("# 5.4.4 Ensure password hashing algorithm is SHA-512\n")
         with open ("/etc/authselect/custom/custom-profile/password-auth" , "rt" , buffering = 1 ) as pwquality:
             result_tmp = pwquality.read()
             pwquality = pwquality.close()
         with open ("/etc/authselect/custom/custom-profile/password-auth" , "wt" , buffering = 1 ) as pwquality:
-            result_tmp = re.sub(".*password.*sufficient.*pam_unix.so.*" , "" , result_tmp)
+            result_tmp = re.sub(".*password.*sufficient.*pam_unix.so.*" , "\npassword sufficient pam_unix.so sha512 shadow try_first_pass use_authtok\n" , result_tmp)
             pwquality.write(result_tmp)
-            pwquality.write("password sufficient pam_unix.so sha512 shadow try_first_pass use_authtok")
             pwquality.close()
         with open ("/etc/authselect/custom/custom-profile/system-auth" , "rt" , buffering = 1 ) as pwquality:
             result_tmp = pwquality.read()
             pwquality = pwquality.close()
         with open ("/etc/authselect/custom/custom-profile/system-auth" , "wt" , buffering = 1 ) as pwquality:
-            result_tmp = re.sub(".*password.*sufficient.*pam_unix.so.*" , "" , result_tmp)
+            result_tmp = re.sub(".*password.*sufficient.*pam_unix.so.*" , "\npassword sufficient pam_unix.so sha512 shadow try_first_pass use_authtok remember=5\n" , result_tmp)
             pwquality.write(result_tmp)
-            pwquality.write("password sufficient pam_unix.so sha512 shadow try_first_pass use_authtok remember=5")
             pwquality.close()
         
         cmd = "authselect apply-changes"
@@ -1326,7 +1325,7 @@ def step5():
         with open ("/etc/login.defs" , "wt" , buffering = 1 ) as pwquality:
             result_tmp = re.sub(".*PASS_MAX_DAYS.*" , "" , result_tmp)
             pwquality.write(result_tmp)
-            pwquality.write("PASS_MAX_DAYS 365")
+            pwquality.write("\nPASS_MAX_DAYS 365\n")
             pwquality.close()
         
         step5.write("# 5.5.1.2 Ensure minimum days between password changes is 7 or more\n")
@@ -1336,7 +1335,7 @@ def step5():
         with open ("/etc/login.defs" , "wt" , buffering = 1 ) as pwquality:
             result_tmp = re.sub(".*PASS_MIN_DAYS.*" , "" , result_tmp)
             pwquality.write(result_tmp)
-            pwquality.write("PASS_MIN_DAYS 7")
+            pwquality.write("\nPASS_MIN_DAYS 7\n")
             pwquality.close()
 
         with subprocess.Popen(['/bin/sh', '-c' , 'grep -E ^[^:]+:[^\!*] /etc/shadow | cut -d: -f1' ] , stdout = subprocess.PIPE, stderr = subprocess.STDOUT) as process:
@@ -1356,7 +1355,7 @@ def step5():
         with open ("/etc/login.defs" , "wt" , buffering = 1 ) as pwquality:
             result_tmp = re.sub(".*PASS_WARN_AGE.*" , "" , result_tmp)
             pwquality.write(result_tmp)
-            pwquality.write("PASS_MIN_DAYS 7")
+            pwquality.write("PASS_WARN_AGE 7")
             pwquality.close()
         with subprocess.Popen(['/bin/sh', '-c' , 'grep -E ^[^:]+:[^\!*] /etc/shadow | cut -d: -f1' ] , stdout = subprocess.PIPE, stderr = subprocess.STDOUT) as process:
             stdout , stderr = process.communicate()
@@ -1501,6 +1500,7 @@ def step6():
             stderr,stdout = tmp16.communicate()
         with subprocess.Popen (cmd2 , stdout = step6) as tmp17:
             stderr,stdout = tmp17.communicate()
+
         
         
         
