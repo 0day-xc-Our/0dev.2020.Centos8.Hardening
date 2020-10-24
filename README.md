@@ -12,3 +12,5 @@ How to use :
 NOTE : please allow to the script to finished before canceling it , try to see 0dev.log while it running using tail -f /root/0dev.log
 
 enjoy
+
+Do not forget to change none root user before reboot , as the other user except root will be set expired.
