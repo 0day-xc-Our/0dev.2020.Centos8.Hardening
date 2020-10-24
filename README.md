@@ -13,4 +13,8 @@ NOTE : please allow to the script to finished before canceling it , try to see 0
 
 enjoy
 
-Do not forget to change none root user before reboot , as the other user except root will be set expired.
+Do not forget to change root and none root user password before reboot .
+
+passwd root
+
+passwd user
